@@ -6,19 +6,19 @@ import java.util.HashMap;
 // BEGIN
 public class InMemoryKV implements KeyValueStorage {
 
-    private final Map<String, String> db;
+    protected Map<String, String> db;
 
-    public InMemoryKV(Map<String, String> db) {
-        this.db = db;
+    public InMemoryKV() {
+        this(new HashMap<>());
     }
-    public void swapKeyValue(String key, String value) {
-        if (!db.containsKey(key) || !db.containsKey(value)) {
-            return;
-        }
 
-        String temp = db.get(key);
-        db.put(key, db.get(value));
-        db.put(value, temp);
+    public InMemoryKV(Map<String, String> initialData) {
+        this.db = initialData;
+    }
+
+    @Override
+    public String get(String key, String defaultValue) {
+        return db.getOrDefault(key, defaultValue);
     }
 
     @Override
@@ -32,13 +32,18 @@ public class InMemoryKV implements KeyValueStorage {
     }
 
     @Override
-    public String get(String key, String defaultValue) {
-        return db.getOrDefault(key, defaultValue);
+    public Map<String, String> toMap() {
+        return new HashMap<>(db);
     }
 
-    @Override
-    public Map<String, String> toMap() {
-        return Map.copyOf(db);
+    public void swapKeyValue(String key, String value) {
+        if (!db.containsKey(key) || !db.containsKey(value)) {
+            return;
+        }
+
+        String temp = db.get(key);
+        db.put(key, db.get(value));
+        db.put(value, temp);
     }
 }
 // END
