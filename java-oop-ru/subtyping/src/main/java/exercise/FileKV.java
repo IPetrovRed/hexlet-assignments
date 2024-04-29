@@ -2,51 +2,49 @@ package exercise;
 
 // BEGIN
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Map;
+import java.util.HashMap;
 
-public class FileKV implements KeyValueStorage {
+class FileKV implements KeyValueStorage {
 
-    private final String filePath;
-    private Map<String, String> db;
+    private String path;
+    private Map<String, String> data;
 
-    public FileKV(String filePath, Map<String, String> db) {
-        this.filePath = filePath;
-        this.db = db;
+    public FileKV(String path, Map<String, String> initialData) {
+        this.path = path;
+        this.data = initialData;
         load();
     }
 
     private void load() {
-        String data = Utils.readFile(filePath);
-        if (!data.isEmpty()) {
-            db = Utils.unserialize(data);
-        }
+        String json = Utils.readFile(path);
+        data.putAll(Utils.unserialize(json));
     }
 
-    private void save() {
-        Utils.writeFile(filePath, Utils.serialize(db));
+    void save() {
+        String json = Utils.serialize(data);
+        Utils.writeFile(path, json);
     }
 
     @Override
     public void set(String key, String value) {
-        db.put(key, value);
+        data.put(key, value);
         save();
     }
 
     @Override
     public void unset(String key) {
-        db.remove(key);
+        data.remove(key);
         save();
     }
 
     @Override
     public String get(String key, String defaultValue) {
-        return db.getOrDefault(key, defaultValue);
+        return data.getOrDefault(key, defaultValue);
     }
 
     @Override
     public Map<String, String> toMap() {
-        return Map.copyOf(db);
+        return data;
     }
 }
 // END
