@@ -11,6 +11,15 @@ public class InMemoryKV implements KeyValueStorage {
     public InMemoryKV(Map<String, String> db) {
         this.db = db;
     }
+    public void swapKeyValue(String key, String value) {
+        if (!db.containsKey(key) || !db.containsKey(value)) {
+            return;
+        }
+
+        String temp = db.get(key);
+        db.put(key, db.get(value));
+        db.put(value, temp);
+    }
 
     @Override
     public void set(String key, String value) {
