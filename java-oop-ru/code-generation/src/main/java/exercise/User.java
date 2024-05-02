@@ -1,7 +1,5 @@
 package exercise;
 
-import lombok.Value;
-
 // BEGIN
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
