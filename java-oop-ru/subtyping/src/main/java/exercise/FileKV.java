@@ -9,10 +9,7 @@ class FileKV implements KeyValueStorage {
     private String path;
     private Map<String, String> data;
 
-    public <V, K> FileKV(String s, HashMap<K, V> kvHashMap) {
-    }
-
-    private FileKV(String path, Map<String, String> initialData) {
+      public FileKV(String path, Map<String, String> initialData) {
         this.path = path;
         this.data = initialData;
         load();
