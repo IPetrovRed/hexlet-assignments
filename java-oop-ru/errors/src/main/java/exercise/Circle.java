@@ -5,7 +5,7 @@ public class Circle {
     private Point center;
     private int radius;
 
-    public Circle(Point center,int radius) {
+    public Circle(Point center, int radius) {
         this.center = center;
         this.radius = radius;
     }
@@ -14,9 +14,9 @@ public class Circle {
         return radius;
     }
 
-    public double getSquare() throws NegativeArraySizeException {
+    public double getSquare() throws NegativeRadiusException {
         if (radius < 0) {
-            throw new NegativeArraySizeException("Радиус круга не может быть отрицательным!");
+            throw new NegativeRadiusException("Радиус круга не может быть отрицательным!");
         }
         return Math.PI * radius * radius;
     }
