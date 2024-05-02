@@ -1,8 +1,7 @@
 package exercise;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 // BEGIN
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +34,6 @@ class Car {
             return null;
         }
     }
-    // END
 }
+    // END
+
