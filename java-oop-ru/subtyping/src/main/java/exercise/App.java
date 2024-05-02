@@ -5,16 +5,13 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 // BEGIN
-class App {
-
+public class App {
     public static void swapKeyValue(KeyValueStorage storage) {
-        Map<String, String> data = storage.toMap();
-        Set<Entry<String, String>> entries = data.entrySet();
+        Map<String, String> currentData = storage.toMap();
 
-        data.clear();
-
-        for (Entry<String, String> entry : entries) {
-            data.put(entry.getValue(), entry.getKey());
+        for (Map.Entry<String, String> entry : currentData.entrySet()) {
+            storage.unset(entry.getKey());
+            storage.set(entry.getValue(), entry.getKey());
         }
     }
 }

@@ -1,50 +1,42 @@
 package exercise;
 
 // BEGIN
-import java.util.HashMap;
 import java.util.Map;
 
-class FileKV implements KeyValueStorage {
+public class FileKV implements KeyValueStorage {
+    private String filePath;
+    private Map<String, String> database;
 
-    private String path;
-    private Map<String, String> data;
-
-      public FileKV(String path, Map<String, String> initialData) {
-        this.path = path;
-        this.data = initialData;
-        load();
-    }
-
-    private void load() {
-        String json = Utils.readFile(path);
-        data.putAll(Utils.unserialize(json));
-    }
-
-    void save() {
-        String json = Utils.serialize(data);
-        Utils.writeFile(path, json);
+    public FileKV(String filePath, Map<String, String> initialData) {
+        this.filePath = filePath;
+        this.database = initialData;
+        Utils.writeFile(filePath, Utils.serialize(initialData));
     }
 
     @Override
     public void set(String key, String value) {
-        data.put(key, value);
-        save();
+        database.put(key, value);
+        Utils.writeFile(filePath, Utils.serialize(database));
     }
 
     @Override
     public void unset(String key) {
-        data.remove(key);
-        save();
+        database.remove(key);
+        Utils.writeFile(filePath, Utils.serialize(database));
     }
 
     @Override
     public String get(String key, String defaultValue) {
+        String serializedData = Utils.readFile(filePath);
+        Map<String, String> data = Utils.unserialize(serializedData);
+
         return data.getOrDefault(key, defaultValue);
     }
 
     @Override
     public Map<String, String> toMap() {
-        return data;
+        String serializedData = Utils.readFile(filePath);
+        return Utils.unserialize(serializedData);
     }
 }
 // END
