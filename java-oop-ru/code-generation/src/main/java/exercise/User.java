@@ -1,12 +1,8 @@
 package exercise;
 
-// BEGIN
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
-@RequiredArgsConstructor
-@Getter
-// END
+@Value
 class User {
     int id;
     String firstName;

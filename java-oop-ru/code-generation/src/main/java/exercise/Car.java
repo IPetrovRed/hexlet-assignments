@@ -1,14 +1,12 @@
 package exercise;
 
-// BEGIN
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Value;
 
-@RequiredArgsConstructor
-@Getter
-// END
+import java.io.IOException;
+
+@Value
 class Car {
     int id;
     String brand;
@@ -16,24 +14,21 @@ class Car {
     String color;
     User owner;
 
-    // BEGIN
-    Car(int id, String brand, String model, String color, User owner) {
-        this.id = id;
-        this.brand = brand;
-        this.model = model;
-        this.color = color;
-        this.owner = owner;
+    public String serialize() {
+        ObjectMapper car = new ObjectMapper();
+        try {
+            return car.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public String serialize() {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public static Car unserialize(String json) {
+        ObjectMapper car = new ObjectMapper();
         try {
-            return objectMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
+            return car.readValue(json, Car.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
-    // END
-

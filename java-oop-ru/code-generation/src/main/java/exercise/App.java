@@ -1,31 +1,25 @@
 package exercise;
 
-// BEGIN
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Files;
 
-public class App {
-
-    public static void save(Path path, Car car) {
-        ObjectMapper objectMapper = new ObjectMapper();
+class App {
+    public static void save(Path filePath, Car car) {
+        String serializedCar = car.serialize();
         try {
-            String jsonCar = objectMapper.writeValueAsString(car);
-            Files.write(path, jsonCar.getBytes());
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            Files.writeString(filePath, serializedCar);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
-    public static Car extract(Path path) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonCar = Files.readString(path);
-        return objectMapper.readValue(jsonCar, Car.class);
+    public static Car extract(Path filePath) {
+        try {
+            String filePathAsString = Files.readString(filePath);
+            return Car.unserialize(filePathAsString);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
-// END
