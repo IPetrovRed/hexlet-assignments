@@ -12,15 +12,15 @@ import lombok.Setter;
 
 // BEGIN
 @Entity
-@Table(name = "products")
+@Table(name = "h2")
 @Getter
 @Setter
-public class Product {
+@EqualsAndHashCode(of = {"title", "price"})
 
+public class Product {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private long id;
-
+    private Long id;
     private String title;
     private int price;
 }
